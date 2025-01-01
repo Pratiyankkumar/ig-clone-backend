@@ -3,7 +3,6 @@ const cors = require("cors");
 const http = require("http");
 const socketio = require("socket.io");
 const express = require("express");
-const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const UserRouter = require("./routes/User");
@@ -12,7 +11,7 @@ require("./db/mongoose");
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:5173", "http://192.168.93.78:5173"];
+const allowedOrigins = ["https://insta-clone-one-swart.vercel.app"];
 
 // Configure CORS
 app.use(
@@ -42,12 +41,11 @@ const io = socketio(server, {
 app.set("socketio", io);
 
 app.use(express.json());
-app.use(bodyParser.json());
 
 // Routers
-app.use(uploadRoutes);
-app.use(UserRouter);
-app.use(PostRouter);
+app.use("/api/upload", uploadRoutes);
+app.use("/api/user", UserRouter);
+app.use("/api/post", PostRouter);
 app.use("/api/auth", authRoutes);
 
 // Socket.IO Connection
